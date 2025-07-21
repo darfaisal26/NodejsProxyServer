@@ -66,6 +66,13 @@ app.use("/shipstation", async (req, res) => {
   const proxyPath = req.originalUrl.replace("/shipstation", "");
   const shipstationUrl = `https://ssapi.shipstation.com${proxyPath}`;
 
+    console.log(process.env);
+    // Add this before app.listen
+    console.log(
+      "ShipStation Credentials Loaded:",
+      !!process.env.SHIPSTATION_API_KEY && "Key Present",
+      !!process.env.SHIPSTATION_API_SECRET && "Secret Present"
+    );
   try {
     // Create Basic Auth token
     const authString = Buffer.from(
