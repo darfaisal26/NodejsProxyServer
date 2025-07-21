@@ -21,15 +21,10 @@ app.use((req, res, next) => {
   next();
 });
 
-// Proxy all requests starting with /shipstation
 app.use("/shipstation", async (req, res) => {
   const proxyPath = req.originalUrl.replace("/shipstation", "");
   const shipstationUrl = `https://ssapi.shipstation.com${proxyPath}`;
 
-  //   console.log(proxyPath);
-  //   console.log(shipstationUrl);
-  //   console.log(req.url);
-  //   console.log(req.body);
   try {
     const response = await fetch(shipstationUrl, {
       method: req.method,
@@ -42,8 +37,24 @@ app.use("/shipstation", async (req, res) => {
         : undefined,
     });
 
-    const data = await response.json();
-    console.log(data, "datatatt");
+    // const data = await response.json();
+    // console.log(data, "datatatt");
+    // res.status(response.status).json(data);
+    const contentType = response.headers.get("content-type");
+    console.log("contentType", contentType);
+    const text = await response.text();
+    console.log("text", text);
+
+    let data;
+    try {
+      data = contentType?.includes("application/json")
+        ? JSON.parse(text)
+        : text;
+    } catch (error) {
+      console.error("❌ Failed to parse response JSON:", text);
+      return res.status(response.status).send(text);
+    }
+
     res.status(response.status).json(data);
   } catch (err) {
     console.error("Error in proxy:", err);
