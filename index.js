@@ -21,15 +21,61 @@ app.use((req, res, next) => {
   next();
 });
 
+// app.use("/shipstation", async (req, res) => {
+//   const proxyPath = req.originalUrl.replace("/shipstation", "");
+//   const shipstationUrl = `https://ssapi.shipstation.com${proxyPath}`;
+
+//   try {
+//     const response = await fetch(shipstationUrl, {
+//       method: req.method,
+//       headers: {
+//         Authorization: process.env.SHIPSTATION_API_KEY,
+//         "Content-Type": "application/json",
+//       },
+//       body: ["POST", "PUT", "DELETE"].includes(req.method)
+//         ? JSON.stringify(req.body)
+//         : undefined,
+//     });
+
+//     // const data = await response.json();
+//     // console.log(data, "datatatt");
+//     // res.status(response.status).json(data);
+//     const contentType = response.headers.get("content-type");
+//     console.log("contentType", contentType);
+//     const text = await response.text();
+//     console.log("text", text);
+
+//     let data;
+//     try {
+//       data = contentType?.includes("application/json")
+//         ? JSON.parse(text)
+//         : text;
+//     } catch (error) {
+//       console.error("❌ Failed to parse response JSON:", text);
+//       return res.status(response.status).send(text);
+//     }
+
+//     res.status(response.status).json(data);
+//   } catch (err) {
+//     console.error("Error in proxy:", err);
+//     res.status(500).send("Proxy error");
+//   }
+// });
+
 app.use("/shipstation", async (req, res) => {
   const proxyPath = req.originalUrl.replace("/shipstation", "");
   const shipstationUrl = `https://ssapi.shipstation.com${proxyPath}`;
 
   try {
+    // Create Basic Auth token
+    const authString = Buffer.from(
+      `${process.env.SHIPSTATION_API_KEY}:${process.env.SHIPSTATION_API_SECRET}`
+    ).toString("base64");
+
     const response = await fetch(shipstationUrl, {
       method: req.method,
       headers: {
-        Authorization: process.env.SHIPSTATION_API_KEY,
+        Authorization: `Basic ${authString}`,
         "Content-Type": "application/json",
       },
       body: ["POST", "PUT", "DELETE"].includes(req.method)
@@ -37,13 +83,9 @@ app.use("/shipstation", async (req, res) => {
         : undefined,
     });
 
-    // const data = await response.json();
-    // console.log(data, "datatatt");
-    // res.status(response.status).json(data);
+    // Handle response
     const contentType = response.headers.get("content-type");
-    console.log("contentType", contentType);
     const text = await response.text();
-    console.log("text", text);
 
     let data;
     try {
@@ -61,7 +103,6 @@ app.use("/shipstation", async (req, res) => {
     res.status(500).send("Proxy error");
   }
 });
-
 app.listen(port, () => {
   console.log(`🚀 Server running at http://localhost:${port}`);
 });
