@@ -26,10 +26,10 @@ app.use("/shipstation", async (req, res) => {
   const proxyPath = req.originalUrl.replace("/shipstation", "");
   const shipstationUrl = `https://ssapi.shipstation.com${proxyPath}`;
 
-  console.log(proxyPath);
-  console.log(shipstationUrl);
-  console.log(req.url);
-  console.log(req.body);
+  //   console.log(proxyPath);
+  //   console.log(shipstationUrl);
+  //   console.log(req.url);
+  //   console.log(req.body);
   try {
     const response = await fetch(shipstationUrl, {
       method: req.method,
@@ -47,7 +47,7 @@ app.use("/shipstation", async (req, res) => {
     res.status(response.status).json(data);
   } catch (err) {
     console.error("Error in proxy:", err);
-    res.status(500).send("Proxy error comng");
+    res.status(500).send("Proxy error");
   }
 });
 
