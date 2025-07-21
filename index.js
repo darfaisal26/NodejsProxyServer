@@ -43,39 +43,7 @@ app.use("/shipstation", async (req, res) => {
     });
 
     const data = await response.json();
-    const responseText = await response.text();
-    console.log("ShipStation Raw Response Status:", response.status);
-    console.log("ShipStation Raw Response Body:", responseText);
-    // --- END DEBUGGING ---
-
-    if (response.ok && responseText) {
-      try {
-        const data = JSON.parse(responseText); // Manually parse the text
-        console.log(data, "datatatt");
-        res.status(response.status).json(data);
-      } catch (jsonParseError) {
-        console.error(
-          "Error parsing ShipStation response as JSON:",
-          jsonParseError
-        );
-        res
-          .status(500)
-          .send(
-            "Error: ShipStation returned non-JSON content or malformed JSON."
-          );
-      }
-    } else {
-      // If response is not OK or has no content, send the raw text or a default message
-      console.warn(
-        `ShipStation did not return a successful response (Status: ${response.status}).`
-      );
-      res
-        .status(response.status)
-        .send(
-          responseText ||
-            `ShipStation returned status ${response.status} with no content.`
-        );
-    }
+    console.log(data, "datatatt");
     res.status(response.status).json(data);
   } catch (err) {
     console.error("Error in proxy:", err);
