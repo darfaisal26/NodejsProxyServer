@@ -1,24 +1,28 @@
 import fetch from "node-fetch";
 import express from "express";
 import dotenv from "dotenv";
-
+import cors from "cors"
 dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(express.json());
+app.use(cors());
 
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
-  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-  if (req.method === "OPTIONS") return res.sendStatus(204);
-  next();
-});
+// Optional: Handle preflight for custom headers or methods (if needed)
+app.options("*", cors());
+
+// app.use((req, res, next) => {
+//   res.header("Access-Control-Allow-Origin", "*");
+//   res.header(
+//     "Access-Control-Allow-Headers",
+//     "Origin, X-Requested-With, Content-Type, Accept"
+//   );
+//   res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+//   if (req.method === "OPTIONS") return res.sendStatus(204);
+//   next();
+// });
 
 app.use("/shipstation", async (req, res) => {
   const proxyPath = req.originalUrl.replace("/shipstation", "");
