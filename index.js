@@ -32,7 +32,7 @@ app.use("/shipstation", async (req, res) => {
     const headers = {
       Authorization: `Basic ${authString}`,
     };
-    console.log("headers", headers);
+    // console.log("headers", headers);
 
     const hasBody = ["POST", "PUT", "DELETE"].includes(req.method);
     if (hasBody) {
@@ -46,7 +46,7 @@ app.use("/shipstation", async (req, res) => {
       body: hasBody ? JSON.stringify(req.body) : undefined,
     };
 
-    console.log("options", options);
+    // console.log("options", options);
     const response = await fetch(shipstationUrl, options);
     console.log("response", response);
 
@@ -57,20 +57,20 @@ app.use("/shipstation", async (req, res) => {
 
     let data;
     try {
-      console.log("in try block");
+      // console.log("in try block");
       data = contentType?.includes("application/json")
         ? JSON.parse(text)
         : text;
-      console.log(data, "data");
+      console.log("data", data, "data");
     } catch (error) {
-      console.log("in catch inner block");
+      // console.log("in catch inner block");
       console.error("❌ Failed to parse response JSON:", text);
       return res.status(response.status).send(text);
     }
 
     res.status(response.status).json(data);
   } catch (err) {
-    console.log("in catch block");
+    // console.log("in catch block");
     console.error("🚨 Error in proxy:", err);
     res.status(500).send("Proxy error Internal Server Error");
   }
@@ -79,6 +79,59 @@ app.use("/shipstation", async (req, res) => {
 app.listen(port, () => {
   console.log(`🚀 Server running at http://localhost:${port}`);
 });
+
+
+
+
+
+
+
+
+
+/* {
+    "shipByDateTime": null,
+    "paidDateTime": "2025-07-22T15:26:27.000Z",
+    "holdUntilDateTime": null,
+    "orderDateTime": "2025-07-22T15:26:27.000Z",
+    "items": [],
+    "amountSummary": {
+        "shippingPaid": {
+            "value": 0,
+            "code": "USD"
+        },
+        "taxPaid": {
+            "value": 0,
+            "code": "USD"
+        },
+        "totalPaid": {
+            "value": 0,
+            "code": "USD"
+        }
+    },
+    "soldTo": {
+        "email": "business@samsung.com",
+        "name": "New order",
+        "phone": "0837273273"
+    },
+    "isGift": false,
+    "shipToAddress": {
+        "countryCode": "US",
+        "email": "business@samsung.com",
+        "name": "New order",
+        "company": "samsung",
+        "line1": "12",
+        "city": "Seoul",
+        "state": "WV",
+        "postalCode": "12882",
+        "phone": "0837273273"
+    },
+    "orderNumber": "",
+    "createGuid": "0374f211-86c9-0cdd-7af7-8ce5569ed361",
+    "store": {
+        "storeGuid": "8c3d89b1-e72c-48f1-94a5-7350cbb8527f"
+    },
+    "storeGuid": "8c3d89b1-e72c-48f1-94a5-7350cbb8527f"
+} */
 
 /*
 {
