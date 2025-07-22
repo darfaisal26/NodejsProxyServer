@@ -24,7 +24,7 @@ app.options("*", cors());
 //   next();
 // });
 
-app.use("/shipstation", async (req, res) => {
+app.all("/shipstation/*", async (req, res) => {
   const proxyPath = req.originalUrl.replace("/shipstation", "");
   const shipstationUrl = `https://ssapi.shipstation.com${proxyPath}`;
 
