@@ -1,4 +1,3 @@
-// src/proxyFactory.js
 import fetch from "node-fetch";
 
 export function createProxyRoute({ baseUrl, getHeaders }) {
