@@ -5,3 +5,7 @@
 2025-07-31T09:37:55.813Z GET /shipstation/orders
 Jul 31, 2025 (Thu) 03:08:24 PM GET /shipstation/orders
 Jul 31, 2025 (Thu) 03:10:05 PM GET /shipstation/products
+Aug 14, 2025 (Thu) 11:20:07 AM GET /shipments/getrates
+Aug 14, 2025 (Thu) 11:27:27 AM GET /shipstation/shipments
+Aug 14, 2025 (Thu) 11:29:08 AM GET /shipstation/shipments
+Aug 14, 2025 (Thu) 11:30:32 AM POST /shipstation/shipments
