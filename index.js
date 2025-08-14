@@ -1,8 +1,8 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import { createProxyRoute } from "./proxyFactor.js";
 import logApp from "./logServer.js";
+import { createProxyRoute } from "./proxyFactor.js";
 
 dotenv.config();
 
@@ -18,6 +18,7 @@ app.use(
   "/shipstation",
   createProxyRoute({
     baseUrl: "https://ssapi.shipstation.com",
+    // baseUrl: "https://docs.shipstation.com/_mock/openapi/v2",
     getHeaders: async () => {
       const auth = Buffer.from(
         `${process.env.SHIPSTATION_API_KEY}:${process.env.SHIPSTATION_API_SECRET}`

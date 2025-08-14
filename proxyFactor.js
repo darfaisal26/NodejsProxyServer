@@ -5,6 +5,7 @@ export function createProxyRoute({ baseUrl, getHeaders }) {
   return async (req, res) => {
     const proxyPath = req.originalUrl.replace(req.baseUrl, "");
     const targetUrl = `${baseUrl}${proxyPath}`;
+    console.log(targetUrl, "targetUrl");
 
     try {
       const headers = await getHeaders(req);
